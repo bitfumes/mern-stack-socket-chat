@@ -5,7 +5,11 @@ const app = express();
 const PORT = 4000;
 
 const httpServer = http.createServer(app);
-const io = new Server(httpServer);
+const io = new Server(httpServer, {
+  cors: {
+    origin: ["http://localhost:3000"],
+  },
+});
 
 import path from "path";
 import { fileURLToPath } from "url";
