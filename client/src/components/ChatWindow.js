@@ -53,51 +53,49 @@ export default function ChatWindow() {
   }
 
   return (
-    <Box sx={{ display: "flex", justifyContent: "center" }}>
-      <Card
-        sx={{
-          padding: 2,
-          marginTop: 10,
-          width: "60%",
-          backgroundColor: "gray",
-          color: "white",
-        }}
-      >
-        <Box sx={{ marginBottom: 5 }}>
-          {chat.map((data) => (
-            <Typography
-              sx={{ textAlign: data.received ? "left" : "right" }}
-              key={data.message}
-            >
-              {data.message}
-            </Typography>
-          ))}
-        </Box>
-        <Box component="form" onSubmit={handleForm}>
-          {typing && (
-            <InputLabel sx={{ color: "white" }} shrink htmlFor="message-input">
-              Typing...
-            </InputLabel>
-          )}
-          <OutlinedInput
-            sx={{ backgroundColor: "white" }}
-            size="small"
-            fullWidth
-            id="message-input"
-            value={message}
-            placeholder="Write your message"
-            inputProps={{ "aria-label": "search google maps" }}
-            onChange={handleInput}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton type="submit" edge="end">
-                  <SendIcon />
-                </IconButton>
-              </InputAdornment>
-            }
-          />
-        </Box>
-      </Card>
-    </Box>
+    <Card
+      sx={{
+        padding: 2,
+        marginTop: 10,
+        width: "60%",
+        backgroundColor: "gray",
+        color: "white",
+      }}
+    >
+      <Box sx={{ marginBottom: 5 }}>
+        {chat.map((data) => (
+          <Typography
+            sx={{ textAlign: data.received ? "left" : "right" }}
+            key={data.message}
+          >
+            {data.message}
+          </Typography>
+        ))}
+      </Box>
+      <Box component="form" onSubmit={handleForm}>
+        {typing && (
+          <InputLabel sx={{ color: "white" }} shrink htmlFor="message-input">
+            Typing...
+          </InputLabel>
+        )}
+        <OutlinedInput
+          sx={{ backgroundColor: "white" }}
+          size="small"
+          fullWidth
+          id="message-input"
+          value={message}
+          placeholder="Write your message"
+          inputProps={{ "aria-label": "search google maps" }}
+          onChange={handleInput}
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton type="submit" edge="end">
+                <SendIcon />
+              </IconButton>
+            </InputAdornment>
+          }
+        />
+      </Box>
+    </Card>
   );
 }
