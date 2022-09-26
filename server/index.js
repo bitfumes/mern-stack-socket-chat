@@ -22,7 +22,10 @@ app.get("/", (req, res) => {
 });
 
 io.on("connection", (socket) => {
-  console.log("Connection is ready");
+  // console.log("Connection is ready");
+  socket.on("send-message", (data) => {
+    socket.emit("message-from-server", data);
+  });
 });
 
 httpServer.listen(PORT, () => {
