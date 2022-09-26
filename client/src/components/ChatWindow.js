@@ -7,17 +7,13 @@ import InputLabel from "@mui/material/InputLabel";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
-import { io } from "socket.io-client";
+import { useOutletContext } from "react-router-dom";
 
 export default function ChatWindow() {
-  const [socket, setSocket] = useState(null);
+  const { socket } = useOutletContext();
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);
   const [typing, setTyping] = useState(false);
-
-  useEffect(() => {
-    setSocket(io("http://localhost:4000"));
-  }, []);
 
   useEffect(() => {
     if (!socket) return;
