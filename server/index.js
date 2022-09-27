@@ -1,7 +1,16 @@
+import cors from "cors";
 import express from "express";
 import http from "http";
+import mongoose from "mongoose";
+import path from "path";
 import { Server } from "socket.io";
+import { fileURLToPath } from "url";
+import router from "./api/routes.js";
 import sockets from "./socket/sockets.js";
+
+await mongoose.connect(
+  "mongodb+srv://bitfumes123:bitfumes123@cluster0.yk0jpvz.mongodb.net/?retryWrites=true&w=majority"
+);
 
 const app = express();
 const PORT = 4000;
@@ -13,14 +22,14 @@ const io = new Server(httpServer, {
   },
 });
 
-import path from "path";
-import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+app.use(cors());
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
+app.use("/", router);
 
 io.on("connection", sockets);
 
