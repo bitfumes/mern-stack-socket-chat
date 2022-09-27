@@ -13,8 +13,8 @@ export default function Header({ socket, userId, setUserId }) {
   function createNewRoom() {
     const roomId = uuidv4();
     navigate(`/room/${roomId}`);
-    socket.emit("new-room-created", { roomId });
-    setRooms([...rooms, roomId]);
+    socket.emit("new-room-created", { roomId, userId });
+    // setRooms([...rooms, { roomId, name: "Test", _id: "testId" }]);
   }
 
   useEffect(() => {
@@ -29,8 +29,12 @@ export default function Header({ socket, userId, setUserId }) {
   useEffect(() => {
     if (!socket) return;
 
-    socket.on("new-room-created", ({ roomId }) => {
-      setRooms([...rooms, roomId]);
+    socket.on("new-room-created", ({ room }) => {
+      setRooms([...rooms, room]);
+    });
+
+    socket.on("room-removed", ({ roomId }) => {
+      setRooms(rooms.filter((room) => room.roomId !== roomId));
     });
   }, [socket]);
 
@@ -59,7 +63,7 @@ export default function Header({ socket, userId, setUserId }) {
 
           {rooms.map((room) => (
             <Link
-              key={room._id}
+              key={room.roomId}
               style={{ textDecoration: "none" }}
               to={`/room/${room.roomId}`}
             >
