@@ -23,16 +23,22 @@ app.get("/", (req, res) => {
 
 io.on("connection", (socket) => {
   // console.log("Connection is ready");
-  socket.on("send-message", (data) => {
-    socket.broadcast.emit("message-from-server", data);
+  socket.on("send-message", ({ message, roomId }) => {
+    let skt = socket.broadcast;
+    skt = roomId ? skt.to(roomId) : skt;
+    skt.emit("message-from-server", { message });
   });
 
-  socket.on("typing-started", () => {
-    socket.broadcast.emit("typing-started-from-server");
+  socket.on("typing-started", ({ roomId }) => {
+    let skt = socket.broadcast;
+    skt = roomId ? skt.to(roomId) : skt;
+    skt.emit("typing-started-from-server");
   });
 
-  socket.on("typing-stoped", () => {
-    socket.broadcast.emit("typing-stoped-from-server");
+  socket.on("typing-stoped", ({ roomId }) => {
+    let skt = socket.broadcast;
+    skt = roomId ? skt.to(roomId) : skt;
+    skt.emit("typing-stoped-from-server");
   });
 
   socket.on("join-room", ({ roomId }) => {
