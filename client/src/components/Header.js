@@ -1,12 +1,12 @@
-import { Link, useNavigate } from "react-router-dom";
-
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
+import Cookies from "js-cookies";
 import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
-export default function Header({ socket }) {
+export default function Header({ socket, userId, setUserId }) {
   const navigate = useNavigate();
   const [rooms, setRooms] = useState([]);
 
@@ -34,6 +34,19 @@ export default function Header({ socket }) {
     });
   }, [socket]);
 
+  function login() {
+    const userId = uuidv4();
+    setUserId(userId);
+    Cookies.setItem("userId", userId);
+    navigate("/");
+  }
+
+  function logout() {
+    setUserId(null);
+    Cookies.removeItem("userId");
+    navigate("/");
+  }
+
   return (
     <Card sx={{ marginTop: 5, backgroundColor: "gray" }} raised>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -57,9 +70,28 @@ export default function Header({ socket }) {
           ))}
         </Box>
 
-        <Button sx={{ color: "white" }} variant="text" onClick={createNewRoom}>
-          New Room
-        </Button>
+        <Box>
+          {userId && (
+            <>
+              <Button
+                sx={{ color: "white" }}
+                variant="text"
+                onClick={createNewRoom}
+              >
+                New Room
+              </Button>
+              <Button sx={{ color: "white" }} variant="text" onClick={logout}>
+                Logout
+              </Button>
+            </>
+          )}
+
+          {!userId && (
+            <Button sx={{ color: "white" }} variant="text" onClick={login}>
+              Login
+            </Button>
+          )}
+        </Box>
       </Box>
     </Card>
   );
